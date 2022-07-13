@@ -15,17 +15,20 @@
   },
   "dependencies": {
     "gatsby": "^4.18.0",
+    "gatsby-image": "^3.11.0",
+    "gatsby-plugin-sharp": "^4.18.1",
+    "gatsby-source-filesystem": "^4.18.1",
+    "gatsby-transformer-sharp": "^4.18.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "prettier": "^2.7.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
-  },
+  "repository": "https://github.com/yusukeh0315/gatsby_mysite_part1.git",
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
-  }
+  },
+  "main": "index.js",
+  "author": "yusuke.h0315@gmail.com <yusuke.h0315@gmail.com>"
 }
