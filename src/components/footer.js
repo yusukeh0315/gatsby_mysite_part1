@@ -9,7 +9,7 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons"
 
-export default () => {
+export default function Footer() {
   const data = useStaticQuery(graphql`
     query {
         pattern: file(relativePath: {eq: "pattern.jpg"}) {

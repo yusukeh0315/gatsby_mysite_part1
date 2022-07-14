@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 
-export default () => (
+export default function Header() {
   <header className="header">
     <div className="container">
       <div className="site">
@@ -25,4 +25,4 @@ export default () => (
       </nav>
     </div>
   </header>
-)
+}
