@@ -4,6 +4,11 @@
  * See: https://www.gatsbyjs.com/docs/gatsby-config/
  */
 
+//環境変数を使うために必要
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   /* Your site config here */
   siteMetadata: {
@@ -38,5 +43,14 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
+    `gatsby-plugin-image`,
+    {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        spaceId: process.env.CONTENTFUL_SPACE_ID.replace(/\"/g, ''),
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN.replace(/\"/g, ''),
+        host: process.env.CONTENTFUL_HOST.replace(/\"/g, ''),
+      }
+    },
   ],
 }
