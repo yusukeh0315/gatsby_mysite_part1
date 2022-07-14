@@ -1,6 +1,7 @@
 import React from "react"
 import { graphql } from "gatsby"
 import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
 
@@ -24,7 +25,7 @@ export default function Header({ data, location }) {
 
     <div className="eyecatch">
       <figure>
-        <Img fluid={data.about.childImageSharp.fluid} alt="ブルーベリー＆ヨーグルト" />
+        <GatsbyImage image={data.about.childImageSharp.gatsbyImageData} alt="ブルーベリー＆ヨーグルト" />
       </figure>
     </div>
     <article className="content">
@@ -64,59 +65,16 @@ export default function Header({ data, location }) {
 }
 
 export const query = graphql`
-query {
-  about: file(relativePath: {eq: "about.jpg"}) {
-    relativePath
-    childImageSharp {
-      fluid(maxWidth: 1600) {
-        ...GatsbyImageSharpFluid_withWebp
-      }
-      original {
-        src
-        height
-        width
+  query {
+    about: file(relativePath: { eq: "about.jpg" }) {
+      childImageSharp {
+        gatsbyImageData(layout: FULL_WIDTH)
+        original {
+          src
+          height
+          width
+        }
       }
     }
   }
-  fruit: file(relativePath: {eq: "fruit.jpg"}) {
-    relativePath
-    childImageSharp {
-      fluid(maxWidth: 320) {
-        ...GatsbyImageSharpFluid_withWebp
-      }
-    }
-  }
-  grain: file(relativePath: {eq: "grain.jpg"}) {
-    relativePath
-    childImageSharp {
-      fluid(maxWidth: 320) {
-        ...GatsbyImageSharpFluid_withWebp
-      }
-    }
-  }
-  beverage: file(relativePath: {eq: "beverage.jpg"}) {
-    relativePath
-    childImageSharp {
-      fluid(maxWidth: 320) {
-        ...GatsbyImageSharpFluid_withWebp
-      }
-    }
-  }
-  berry: file(relativePath: {eq: "berry.jpg"}) {
-    relativePath
-    childImageSharp {
-      fluid(maxWidth: 1600) {
-        ...GatsbyImageSharpFluid_withWebp
-      }
-    }
-  }
-  pattern: file(relativePath: {eq: "pattern.jpg"}) {
-    relativePath
-    childImageSharp {
-      fluid(maxWidth: 1920, quality: 90) {
-        ...GatsbyImageSharpFluid_withWebp
-      }
-    }
-  }
-}
 `
