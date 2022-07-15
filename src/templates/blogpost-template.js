@@ -1,13 +1,16 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 import { BLOCKS } from "@contentful/rich-text-types"
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer"
 import Layout from "../components/layout"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClock, faFolderOpen } from "@fortawesome/free-regular-svg-icons"
 import { faChevronLeft, faChevronRight, faCheckSquare } from "@fortawesome/free-solid-svg-icons"
+
+import Seo from "../components/seo"
 
 const options = {
     renderNode: {
@@ -35,15 +38,25 @@ const options = {
     },
 }
 
-const Blogpost = ({ data }) => (
+const Blogpost = ({ data, pageContext, location }) => (
     <Layout>
+        <Seo
+            pagetitle={data.contentfulBlogPost.title}
+            pagedesc={`${documentToPlainTextString(
+                JSON.parse(data.contentfulBlogPost.content.raw)
+            ).slice(0, 70)}…`}
+            pagepath={location.pathname}
+            blogimg={`https:${data.contentfulBlogPost.eyecatch.file.url}`}
+            pageimgw={data.contentfulBlogPost.eyecatch.file.details.image.width}
+            pageimgh={data.contentfulBlogPost.eyecatch.file.details.image.height}
+        />
 
         <div>
         <div className="eyecatch">
             <figure>
                 <GatsbyImage
-                    image={data.contentfulBlogPost.eyecatch.gatsbyImageData}
-                    alt={data.contentfulBlogPost.eyecatch.description}
+                image={data.contentfulBlogPost.eyecatch.gatsbyImageData}
+                alt={data.contentfulBlogPost.eyecatch.description}
                 />
             </figure>
         </div>
@@ -70,18 +83,22 @@ const Blogpost = ({ data }) => (
                 {renderRichText(data.contentfulBlogPost.content, options)}
             </div>
             <ul className="postlink">
+                {pageContext.next && (
                 <li className="prev">
-                <a href="base-blogpost.html" rel="prev">
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                    <span>前の記事</span>
-                </a>
+                    <Link to={`/blog/post/${pageContext.next.slug}/`} rel="prev">
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                        <span>{pageContext.next.title}</span>
+                    </Link>
                 </li>
-                <li className="next">
-                <a href="base-blogpost.html" rel="next">
-                    <span>次の記事</span>
-                    <FontAwesomeIcon icon={faChevronRight} />
-                </a>
-                </li>
+                )}
+                {pageContext.previous && (
+                    <li className="next">
+                    <Link to={`/blog/post/${pageContext.previous.slug}/`} rel="next">
+                        <span>{pageContext.previous.title}</span>
+                        <FontAwesomeIcon icon={faChevronRight} />
+                    </Link>
+                    </li>
+                )}
             </ul>
             </div>
         </article>
@@ -91,8 +108,8 @@ const Blogpost = ({ data }) => (
 )
 
 export const query = graphql`
-    query {
-        contentfulBlogPost {
+    query($id: String!) {
+        contentfulBlogPost(id: { eq: $id }) {
             title
             publishDateJP:publishDate(formatString: "YYYY年MM月DD日")
             publishDate
@@ -104,6 +121,15 @@ export const query = graphql`
             eyecatch {
                 gatsbyImageData(layout: FULL_WIDTH)
                 description
+                file {
+                    details {
+                        image {
+                            width
+                            height
+                        }
+                    }
+                    url
+                }
             }
             content {
                 raw
