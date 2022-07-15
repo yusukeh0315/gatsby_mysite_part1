@@ -22,7 +22,7 @@ const Seo = props => {
         ? `${props.pagetitle} | ${data.site.siteMetadata.title}`
         : data.site.siteMetadata.title
 
-    const description = props.description || data.site.siteMetadata.description
+    const description = props.pagedesc || data.site.siteMetadata.description
 
     const url = props.pagepath
         ? `${data.site.siteMetadata.siteUrl}${props.pagepath}`
